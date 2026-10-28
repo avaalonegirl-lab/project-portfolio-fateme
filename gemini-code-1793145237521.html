@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fatemeh Mohebbi — Course Portfolio (UEXP26)</title>
+    <style>
+        :root {
+            --paper-bg: #fffdf5; 
+            --pen-blue: #0c3b70; 
+            --text-dark: #2d3748; 
+            --box-bg: rgba(255, 255, 255, 0.92); 
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; scroll-padding-top: 100px; }
+        
+        body {
+            background: linear-gradient(
+                to bottom, 
+                rgba(254, 204, 0, 0.10) 0%, 
+                rgba(254, 204, 0, 0.80) 100%
+            ), url('kitchen-sketch-bg.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: var(--text-dark);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.7;
+            min-height: 100vh;
+        }
+
+        /* هدر ثابت بالای صفحه */
+        .topbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px dashed rgba(12, 59, 112, 0.3);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand {
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--pen-blue);
+            text-decoration: none;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.1em;
+            color: var(--text-dark);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--pen-blue);
+        }
+
+        .overlay {
+            min-height: 100vh;
+            padding: 40px 20px 80px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding-right: 60px; 
+        }
+
+        /* --- پروگرس‌بار ۶ دایره و یخچال متحرک --- */
+        #progress-container {
+            position: fixed;
+            top: 50%;
+            right: 25px;
+            transform: translateY(-50%);
+            height: 300px;
+            width: 30px;
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+
+        .progress-dot {
+            width: 10px;
+            height: 10px;
+            border: 2px solid var(--pen-blue);
+            border-radius: 50%;
+            background: #ffffff;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        #fridge-tracker {
+            position: absolute;
+            top: 0; /* استارت دقیق روی اولین دایره */
+            left: 50%;
+            width: 32px;
+            height: 44px;
+            transform: translateX(-50%);
+            transition: top 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            filter: drop-shadow(0 2px 4px rgba(12,59,112,0.2));
+        }
+
+        /* استایل کارت‌های محتوا */
+        .sketch-box {
+            background: var(--box-bg);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 2px solid var(--pen-blue);
+            border-radius: 4px;
+            padding: 35px;
+            margin-bottom: 40px;
+            box-shadow: 4px 4px 0px rgba(12, 59, 112, 0.15);
+        }
+
+        .section-no {
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--pen-blue);
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        h1 {
+            color: var(--pen-blue);
+            font-size: clamp(36px, 6vw, 64px);
+            margin-bottom: 15px;
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+
+        h2 {
+            color: var(--pen-blue);
+            font-size: clamp(24px, 3.5vw, 36px);
+            margin-bottom: 15px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        p {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            color: var(--text-dark);
+        }
+
+        .lead {
+            font-size: 1.25rem;
+            color: #1a202c;
+            font-weight: 500;
+            margin-bottom: 25px;
+        }
+
+        .image-placeholder {
+            border: 2px dashed var(--pen-blue);
+            background: rgba(12, 59, 112, 0.03);
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--pen-blue);
+            font-size: 1rem;
+            text-align: center;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .image-placeholder.tall {
+            height: 400px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .meta-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .meta-panel {
+            background: rgba(12, 59, 112, 0.03);
+            border: 1px solid rgba(12, 59, 112, 0.2);
+            padding: 15px;
+            border-radius: 4px;
+        }
+
+        .meta-panel strong {
+            display: block;
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            color: var(--pen-blue);
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+
+        .quote {
+            font-size: 1.5rem;
+            line-height: 1.4;
+            color: var(--pen-blue);
+            font-style: italic;
+            margin: 20px 0;
+            border-left: 3px solid var(--pen-blue);
+            padding-left: 20px;
+            font-weight: 500;
+        }
+
+        .footer {
+            text-align: center;
+            color: var(--pen-blue);
+            margin-top: 50px;
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            border-top: 1px dashed rgba(12, 59, 112, 0.3);
+            padding-top: 25px;
+            font-weight: bold;
+        }
+
+        @media(max-width: 768px) {
+            .grid-2, .meta-grid { grid-template-columns: 1fr; }
+            .nav-links { display: none; }
+            #progress-container { display: none; }
+            .container { padding-right: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <header class="topbar">
+        <a class="brand" href="#top">FATEME / UEXP26</a>
+        <ul class="nav-links">
+            <li><a href="#hero-section">00 TOP</a></li>
+            <li><a href="#overview">01 OVERVIEW</a></li>
+            <li><a href="#research">02 RESEARCH</a></li>
+            <li><a href="#process">03 PROCESS</a></li>
+            <li><a href="#outcome">04 OUTCOME</a></li>
+            <li><a href="#reflection">05 REFLECTION</a></li>
+        </ul>
+    </header>
+
+    <div id="progress-container">
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+        <div class="progress-dot"></div>
+
+        <svg id="fridge-tracker" viewBox="0 0 24 40" fill="#ffffff" stroke="var(--pen-blue)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="36" rx="2" />
+            <line x1="2" y1="12" x2="22" y2="12" />
+            <line x1="6" y1="5" x2="6" y2="9" />
+            <line x1="6" y1="15" x2="6" y2="22" />
+        </svg>
+    </div>
+
+    <main id="top" class="overlay">
+        <div class="container">
+            
+            <section id="hero-section" class="sketch-box" style="padding: 60px 30px;">
+                <div class="section-no">Experience Design · Portfolio</div>
+                <h1>Understanding<br>Experiences</h1>
+                <p class="lead">A personal course portfolio documenting research, design decisions, outcomes, and what I learned along the way.</p>
+            </section>
+
+            <section id="overview" class="sketch-box">
+                <div class="section-no">01 / CONTEXT</div>
+                <h2>Project Overview</h2>
+                <p class="lead">Rethinking the Student Kitchen</p>
+                <p>The shared student kitchen is often a space of friction, limited fridge storage, and daily chaos. In this project, we investigated everyday student experiences to explore how experience design can restore order, hygiene, and trust.</p>
+                
+                <div class="image-placeholder tall">
+                    📷 [UPLOAD KITCHEN RESEARCH & CONCEPT IMAGE]
+                </div>
+
+                <div class="meta-grid">
+                    <div class="meta-panel"><strong>MY ROLE</strong>UX & Interaction Designer</div>
+                    <div class="meta-panel"><strong>TEAM</strong>Designing Experiences Peers</div>
+                    <div class="meta-panel"><strong>TIMEFRAME</strong>Autumn 2026</div>
+                </div>
+            </section>
+
+            <section id="research" class="sketch-box">
+                <div class="section-no">02 / DISCOVER</div>
+                <h2>Research & Understanding</h2>
+                <p class="lead">How might we reduce friction, food spoilage, and space-sharing challenges in crowded student kitchens?</p>
+                <p>Through deep interviews and field observations, we mapped peak-hour chaos and found that students primarily need transparent boundaries and quick, reliable organization methods.</p>
+                
+                <div class="grid-2">
+                    <div class="image-placeholder">📷 [UPLOAD INTERVIEW NOTES]</div>
+                    <div class="image-placeholder">📷 [UPLOAD FIELDWORK / MAPPING]</div>
+                </div>
+            </section>
+
+            <section id="process" class="sketch-box">
+                <div class="section-no">03 / EXPLORE</div>
+                <h2>Design Process</h2>
+                <p class="lead">From initial restrictions to smart shared interactions.</p>
+                <p>We tested multiple iterations: starting from fully locked cabinets, moving to semi-transparent glass partitions, and finally integrating digital map reservations.</p>
+                
+                <div class="image-placeholder tall">
+                    📷 [UPLOAD ITERATIONS / FIGMA PROTOTYPE]
+                </div>
+            </section>
+
+            <section id="outcome" class="sketch-box">
+                <div class="section-no">04 / MAKE & TEST</div>
+                <h2>Outcome & Evaluation</h2>
+                <p class="lead">The Proposed Experience</p>
+                <p>Our final concept combines student-card-enabled smart shelves, transparent dividers, and an interactive digital booking map to transform the kitchen into a calm environment.</p>
+                
+                <div class="image-placeholder tall">
+                    📷 [UPLOAD FINAL 3D CONCEPT & SCREENS]
+                </div>
+            </section>
+
+            <section id="reflection" class="sketch-box">
+                <div class="section-no">05 / LEARN</div>
+                <h2>Reflection & Next Steps</h2>
+                <blockquote class="quote">“The most important thing I learned was that experience design in physical spaces is not just about the look of an object, but about understanding collective behavior and mutual trust.”</blockquote>
+                <p>I learned how to translate qualitative field research directly into tangible service and interaction specifications. Next step: testing the digital reservation map as a clickable prototype.</p>
+            </section>
+
+            <section id="references" class="sketch-box">
+                <div class="section-no">06 / ACKNOWLEDGE</div>
+                <h2>References & Credits</h2>
+                <p>Readings, lectures, and service design methodologies utilized throughout the UEXP26 course at Halmstad University.</p>
+                <p><strong>Authorship:</strong> Completed as a team project. Documentation, scenarios, and interaction design by Fatemeh Mohebbi.</p>
+            </section>
+
+            <footer class="footer">
+                <p>FATEME / UEXP26 · UNDERSTANDING EXPERIENCES</p>
+            </footer>
+
+        </div>
+    </main>
+
+    <script>
+        const sections = [
+            document.getElementById('hero-section'),
+            document.getElementById('overview'),
+            document.getElementById('research'),
+            document.getElementById('process'),
+            document.getElementById('outcome'),
+            document.getElementById('reflection')
+        ];
+        
+        const fridge = document.getElementById('fridge-tracker');
+        const containerHeight = 300; 
+        const step = containerHeight / (sections.length - 1);
+
+        window.addEventListener('scroll', () => {
+            let scrollPosition = window.scrollY + window.innerHeight / 3;
+            let activeIndex = 0;
+
+            sections.forEach((sec, index) => {
+                if (sec && sec.offsetTop <= scrollPosition) {
+                    activeIndex = index;
+                }
+            });
+
+            let targetTop = activeIndex * step; 
+            fridge.style.top = `${targetTop}px`;
+        });
+    </script>
+</body>
+</html>
